@@ -1,0 +1,37 @@
+.Container{
+    text-align: center;
+}
+.situation{
+    padding: 20px 20px;
+
+}
+.Notes{
+    margin-bottom: 40px;
+    border-bottom: 2px solid;
+    padding: 50px 50px 50px 50px;
+    font-weight: 600;
+    font-size: 30px;
+}
+
+.Owners{
+    text-align: left;
+    padding-bottom: 10px;
+    font-size: 18px;
+    width: 100%;
+    display: flex;
+    justify-content:space-between;
+    
+}
+.Ans{
+    size:20px;
+    margin-left:100px;
+    border: 2px solid;
+    padding-left:100px;
+    padding-bottom: 10px;
+    font-size: 18px;
+   
+}
+.button{
+    margin-bottom: 10px;
+    
+}

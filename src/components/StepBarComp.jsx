@@ -4,10 +4,9 @@ import StepProgressBar from "react-step-progress";
 import "react-step-progress/dist/index.css";
 import BasicFields from "./BasicFields";
 import Declaration from "./Declaration";
-
+import TableFields from "./TableFields";
+import NotesComp from "./NotesComp";
 const StepBarComp = () => {
-  const step2Content = <h1></h1>;
-  const step3Content = <h1></h1>;
 
   // setup step validators, will be called before proceeding to the next step
   function step2Validator() {
@@ -32,13 +31,12 @@ const StepBarComp = () => {
           {
             label: "Image-Acquisition",
             name: "Image-Acquisition",
-            content: step2Content,
+            content: <TableFields />,
           },
           {
             label: "Image-processing",
             name: "Image Processing",
-            content: step3Content,
-            validator: step2Validator,
+            content: <NotesComp/>,
           },
           {
             label: "Declaration",
