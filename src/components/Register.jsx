@@ -1,176 +1,155 @@
-import React ,{useState}from "react";
-
-
-
+import React, { useState } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import { useDispatch, useSelector } from "react-redux";
+import { register } from "../actions/auth"; 
+import { useNavigate } from "react-router-dom";
+import Navbar from "./Navbar";
 const Register = () => {
-//   constructor() {
-//     super();
-//     this.state = {
-//       loading: false,
-//       username: "",
-//       password: "",
-//       confirmPassword: "",
-//     };
-//   }
-  const [values, setValues] = useState({
-    loading: false,
-    username: " ",
-    password: " ",
-    confirmPassword : " ",
+  //redux setup
+  let { message } = useSelector((state) => state);
+  let dispatch = useDispatch();
+  const navigate = useNavigate()
+  //form Validation
+  const formik = useFormik({
+    initialValues: {
+      fullName: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+    onSubmit:function(values) {
+      dispatch(register(values.fullName, values.email, values.password, values.confirmPassword))
+        .then(() => {alert("Redirecting to Login Page");navigate('/login', {replace: true});})
+        .catch(() => {alert("error")});
+    },
+    validationSchema: Yup.object({
+      fullName: Yup.string().label("Full Name").required(),
+      email: Yup.string().email().required(),
+      password: Yup.string().min(4).max(16).required("Password is required"),
+      confirmPassword: Yup.string()
+        .oneOf([Yup.ref("password"), null], "Password must be mastched")
+        .required("Confirm Password is required"),
+    }),
   });
-  const handleAddFormChange = (event) => {
-    event.preventDefault();
-    setValues((values) => ({
-      ...values,
-      [event.target.name]: event.target.value,
-    }));
-    console.log(values);
-  };
-  const performAPICall = async () => {
-    debugger
-    setValues({
-        loading: true
-      })
-    let error = false, response;
-     await fetch(``, {
-          // Adding method type
-          method: "POST",              
-          // Adding body or contents to send
-          body: JSON.stringify({
-            username: values.username,
-            password: values.password,
-          }),              
-          // Adding headers to the request
-          headers: {
-              "Content-type": "application/json; charset=UTF-8"
-          }
-        }).then(async res => {
-        response = await res.json()
-        }).catch(error => {
-          error = true
-        })
-        setValues({
-            loading: false
-          })  
-        if(validateResponse(error, response) === true) {
-          return response;
-        }
-  };
-  const validateInput = () => {
-    let username = values.username
-    let password = values.password
-    let confirmPassword = values.confirmPassword
-    var usernameLength= username.length 
-    var passwordLength = password.length 
-    var confirmPasswordLength = confirmPassword.length
-    // if(usernameLength === 0 ){
-    //   message.error("Username is a required field")
-    //   return false
-    // }
-    // else if( passwordLength === 0 ){
-    //   message.error("Password is a required field")
-    //   return false
-    // }
-    // else if(confirmPasswordLength===0){
-    //   message.error("Confirm Password is a required field")
-    //   return false
-    // }
-    // else if(usernameLength <6 || usernameLength >32 ){
-    //   message.error("Username length should be between 6 and 32 characters")
-    //   return false
-    // }
-    // else if( passwordLength <6 ||  passwordLength >32 ){
-    //   message.error("Password length should be between 6 and 32 characters")
-    //   return false
-    // }
-    // else if(password.localeCompare(confirmPassword) !==0){
-  //     message.error("Password and confirm password should be same")
-  //     return false
-  //   }
-  //   return true
-   };
-  const validateResponse = (errored, response) => {
-    // if (errored === true) {
-    //   message.error("Registering Failed! Please try again!")
-    //   return false
-    // }
-    // else if (errored !== true && response.success === false) {
-    //   message.error(`${response?.message}`)
-    //   return false
-    // }
-    // else if (errored !== true && response.success === true) {
-    //   message.success("Registered successfully")
-    //   return true
-    // }
-  };
-  const register = async () => {
-    const valInput = validateInput();
-    if(valInput === true){
-      const response = await performAPICall();
-      if(response !== null){
-        setValues((values)=>({
-            ...values,
-            username: "",
-            password: "",
-          }))
-      }else{
-        // message.error("Error occured");
-      }
-    }    
-  };
 
-    return (
-      <>
-       
 
-        {/* Display Register fields */}
-        <div>
-        <div className="bg-gray-100 text-gray-800 antialiased px-4 !py-20 flex flex-col justify-center sm:py-12">
-          <div className="w-full relative py-3 sm:max-w-xl mx-auto text-center">
-            <span className="text-2xl font-light">Register as a User</span>
-            <div className="relative mt-4 pb-6 bg-white shadow-md sm:rounded-lg text-left">
-              <div className="h-2 bg-green-800 rounded-t-md"></div>
-              <div className="py-6 px-8">
-                <label className="block font-semibold">Username or Email</label>
+  return (
+    <>
+    <Navbar />
+    <div
+      className="text-gray-800 antialiased px-4 flex flex-col justify-center sm:py-12"
+    >
+      
+      <div className="w-full relative py-3 sm:max-w-xl mx-auto text-center">
+        <form
+          onSubmit={formik.handleSubmit}
+          className="max-w-lg mx-auto bg-white rounded shadow-lg mt-7 p-3"
+        >
+          <h1 className="text-2xl font-light">
+            Register as a User
+          </h1>
+          <div className="h-2 bg-blue-400 rounded-t-md"></div>
+          <div
+            className="relative mt-4 pb-6 bg-white sm:rounded-lg text-left"
+          >
+            <div className="px-4">
+              <div className="mb-2">
+                <label htmlFor="fullName">Full Name</label>
                 <input
                   type="text"
-                  name="username"
-                  placeholder="Username"
-                  className=" border w-full h-5 px-3 py-5 mt-2 hover:outline-none focus:outline-none focus:ring-1 focus:ring-indigo-600 rounded-md"
-                  onChange={handleAddFormChange}
-                ></input>
-                <label className="block mt-3 font-semibold">Password</label>
+                  name="fullName"
+                  id="fullName"
+                  className={`block w-full rounded border py-1 px-2 ${
+                    formik.touched.fullName && formik.errors.fullName
+                      ? "border-red-400"
+                      : "border-gray-300"
+                  }`}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.fullName}
+                />
+                {formik.touched.fullName && formik.errors.fullName && (
+                  <span className="text-red-400">{formik.errors.fullName}</span>
+                )}
+              </div>
+              <div className="mb-2">
+                <label htmlFor="email">Email</label>
+                <input
+                  type="email"
+                  name="email"
+                  id="email"
+                  className={`block w-full rounded border py-1 px-2 ${
+                    formik.touched.email && formik.errors.email
+                      ? "border-red-400"
+                      : "border-gray-300"
+                  }`}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.email}
+                />
+                {formik.touched.email && formik.errors.email && (
+                  <span className="text-red-400">{formik.errors.email}</span>
+                )}
+              </div>
+              <div className="mb-2">
+                <label htmlFor="password">Password</label>
                 <input
                   type="password"
                   name="password"
-                  placeholder="Password"
-                  className=" border w-full h-5 px-3 py-5 mt-2 hover:outline-none focus:outline-none focus:ring-1 focus:ring-indigo-600 rounded-md"
-                  onChange={handleAddFormChange}
-                ></input>
-                <label className="block mt-3 font-semibold">Confirm Password</label>
+                  id="password"
+                  className={`block w-full rounded border py-1 px-2 ${
+                    formik.touched.password && formik.errors.password
+                      ? "border-red-400"
+                      : "border-gray-300"
+                  }`}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.password}
+                />
+                {formik.touched.password && formik.errors.password && (
+                  <span className="text-red-400">{formik.errors.password}</span>
+                )}
+              </div>
+              <div className="">
+                <label htmlFor="confirmPassword">Confirm Password</label>
                 <input
-                  type="password"
+                  type="text"
                   name="confirmPassword"
-                  placeholder="Confirm Password"
-                  className=" border w-full h-5 px-3 py-5 mt-2 hover:outline-none focus:outline-none focus:ring-1 focus:ring-indigo-600 rounded-md"
-                  onChange={handleAddFormChange}
-                ></input>
-                <div className="flex justify-between items-baseline">
-                  <button className="mt-4 bg-green-900 text-white py-2 px-6 rounded-lg" onClick={register}>
-                    Register
-                  </button>
-                </div>
+                  id="confirmPassword"
+                  className={`block w-full rounded border py-1 px-2 ${
+                    formik.touched.confirmPassword &&
+                    formik.errors.confirmPassword
+                      ? "border-red-400"
+                      : "border-gray-300"
+                  }`}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  value={formik.values.confirmPassword}
+                />
+                {formik.touched.confirmPassword &&
+                  formik.errors.confirmPassword && (
+                    <span className="text-red-400">
+                      {formik.errors.confirmPassword}
+                    </span>
+                  )}
               </div>
             </div>
-            
           </div>
-          
-        </div>
+
+          <div className="text-right">
+            <button
+              className="bg-blue-700 text-white py-2 px-6 rounded-lg"
+              type="submit"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
       </div>
-       
-      </>
-    );
-  
-}
+    </div>
+    </>
+  );
+};
 
 export default Register;

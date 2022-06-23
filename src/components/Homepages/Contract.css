@@ -1,0 +1,21 @@
+.body{
+    justify-content: center;
+    display: flex;
+    align-items: center;
+    height: 90vh;
+    
+    
+}
+.container{
+    width: 80%;
+    border: 1px solid black;
+    background-color: rgb(247, 245, 242);
+    padding: 2%;
+    border-radius: 2%;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+div.rules{
+    text-align: left;
+}

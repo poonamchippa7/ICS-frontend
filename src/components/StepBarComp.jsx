@@ -1,31 +1,27 @@
-import React from "react";
+import React, {useState} from "react";
 import StepProgressBar from "react-step-progress";
 // import the stylesheet
 import "react-step-progress/dist/index.css";
-import BasicFields from "./BasicFields";
-import Declaration from "./Declaration";
-import TableFields from "./TableFields";
-import NotesComp from "./NotesComp";
+import BasicFields from "./ICSApplicationForm_Farmer/BasicFields";
+import Declaration from "./ICSApplicationForm_Farmer/Declaration";
+import TableFields from "./ICSApplicationForm_Farmer/TableFields";
+import NotesComp from "./ICSApplicationForm_Farmer/NotesComp";
+
 const StepBarComp = () => {
-
-  // setup step validators, will be called before proceeding to the next step
-  function step2Validator() {
-    return true;
-  }
-
-  function step3Validator() {
-    // return a boolean
+  
+  const handleonSubmit = () =>{
+    console.log()
   }
   return (
-    <div className="w-[80%] m-auto p-2">
+    <div className="container py-2">
       <label className="text-xl font-semibold">{`ICS APPLICATION FORM (for use by the farmer)`}</label>
       <StepProgressBar
-      onSubmit={()=>{}}
+      onSubmit={handleonSubmit}
         startingStep={0}
         steps={[
           {
-            label: "Briefing",
-            name: "Briefing",
+            label: "Basic Fields",
+            name: "Basic Fields",
             content: <BasicFields />,
           },
           {
@@ -34,8 +30,8 @@ const StepBarComp = () => {
             content: <TableFields />,
           },
           {
-            label: "Image-processing",
-            name: "Image Processing",
+            label: "Notes",
+            name: "Notes",
             content: <NotesComp/>,
           },
           {

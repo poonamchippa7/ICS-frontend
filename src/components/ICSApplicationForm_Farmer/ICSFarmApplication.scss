@@ -1,0 +1,9 @@
+.headingclass{    
+    @apply text-headingColor font-semibold underline text-2xl;
+}
+.inputclass{
+    @apply border-[1px] border-gray-500 flex flex-wrap text-base p-1.5 rounded-md flex-1
+}
+.labelclass{
+    @apply text-lg font-normal flex flex-1 whitespace-nowrap min-w-min
+}
